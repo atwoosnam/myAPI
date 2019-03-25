@@ -3,8 +3,6 @@ var mongoose = require("mongoose");
 const app = express()
 const port = 3000
 
-// const db = require('./db')
-
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/FeedMe");
 
@@ -29,7 +27,28 @@ var schema = new mongoose.Schema({
 var Recipes = mongoose.model('Recipes', schema);
 
 app.get('/', (req, res) => {
-  res.send("Welcome to this custom API!     Query '\\recipes' for a JSON response containing all recipe documents.")
+  res.send("Welcome to this custom API!     Query '/recipes' for a JSON response containing all recipe documents.")
+});
+
+app.get('/add_sample_document', (req, res) => {
+  sampleRecipe = {
+    key: -1,
+    recipeName: 'Gruel',
+    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/b/be/Rice_gruel.jpg',
+    link: null,
+    timeInMinutes: 1,
+    servings: 100,
+    ingredients: [
+    ]
+  }
+
+  Recipes.create(sampleRecipe, (err, doc) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send("Sample Recipe Added")
+    }
+  })
 });
 
 app.get('/recipes', (req, res) => {
