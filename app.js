@@ -30,31 +30,14 @@ app.get('/', (req, res) => {
   res.send("Welcome to this custom API!     Query '/recipes' for a JSON response containing all recipe documents.")
 });
 
-app.get('/add_sample_document', (req, res) => {
-  sampleRecipe = {
-    key: -1,
-    recipeName: 'Gruel',
-    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/b/be/Rice_gruel.jpg',
-    link: null,
-    timeInMinutes: 1,
-    servings: 100,
-    ingredients: [
-    ]
-  }
-
-  Recipes.create(sampleRecipe, (err, doc) => {
-    if (err) {
-      res.send(err)
-    } else {
-      res.send("Sample Recipe Added")
-    }
-  })
-});
-
 app.get('/recipes', (req, res) => {
   const query = Recipes.find({});
   query.exec(function (err, docs) {
-    res.send(JSON.stringify(docs));
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(JSON.stringify(docs));
+    }
   });
 })
 
