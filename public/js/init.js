@@ -50,6 +50,8 @@
 		var	$window = $(window);
 		
 		$window.on('load', function() {
+			document.getElementById("loader").style.display = "none";
+			document.getElementById("wrapper").style.display = "block";
 
 			var	$body = $('body'),
 				$main = $('#main'),
