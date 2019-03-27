@@ -1,6 +1,8 @@
 const express = require('express')
 var mongoose = require("mongoose");
 const app = express()
+const path = require('path');
+const router = express.Router();
 const port = 3000
 
 mongoose.Promise = global.Promise;
@@ -26,8 +28,11 @@ var schema = new mongoose.Schema({
 
 var Recipes = mongoose.model('Recipes', schema);
 
+app.use(express.static(__dirname + '/public'));
+
 app.get('/', (req, res) => {
-  res.send("Welcome to this custom API!     Query '/recipes' for a JSON response containing all recipe documents.")
+  res.sendFile(path.join(__dirname+'/index.html'))
+  // res.send("Welcome to this custom API!     Query '/recipes' for a JSON response containing all recipe documents.")
 });
 
 app.get('/recipes', (req, res) => {
