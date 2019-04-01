@@ -28,10 +28,12 @@ var schema = new mongoose.Schema({
 
 var Recipes = mongoose.model('Recipes', schema);
 
-app.use(express.static(__dirname + '/public'));
+// app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname+'/index.html'))
+  // res.sendFile(path.join(__dirname+'/index.html'))
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
   // res.send("Welcome to this custom API!     Query '/recipes' for a JSON response containing all recipe documents.")
 });
 
