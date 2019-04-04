@@ -2,7 +2,6 @@ const express = require('express')
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser')
 const path = require('path');
-const router = express.Router();
 const port = 3000
 
 const app = express()
@@ -10,10 +9,26 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.get('/recipes', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
+app.get('/contact', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/FeedMe");
 
-var schema = new mongoose.Schema({ 
+var schema = new mongoose.Schema({
   key: Number,
   recipeName: String,
   imageURL: String,
@@ -33,11 +48,7 @@ var schema = new mongoose.Schema({
 
 var Recipes = mongoose.model('Recipes', schema);
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
-app.get('/recipes', (req, res) => {
+app.get('/recipes.json', (req, res) => {
   const query = Recipes.find({});
   query.exec(function (err, docs) {
     if (err) {
@@ -80,6 +91,4 @@ app.post('/recipes', (req, res) => {
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
-
-
 
